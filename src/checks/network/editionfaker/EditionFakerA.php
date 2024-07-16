@@ -89,8 +89,8 @@ class EditionFakerA extends Check {
 			}
 
 			if ($extraData["DeviceOS"] === DeviceOS::IOS) {
-				$this->warn($nickname);
 				if ($extraData["DeviceId"] !== strtoupper($extraData["DeviceId"])) {
+					$this->warn($nickname);
 					$event->setKickFlag(0, self::getData(self::EDITIONFAKER_MESSAGE));
 				}
 			}
