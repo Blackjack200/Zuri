@@ -41,6 +41,7 @@ use ReinfyTeam\Zuri\utils\discord\DiscordWebhookException;
 use function count;
 use function in_array;
 use function intval;
+use function iterator_to_array;
 
 class FlyC extends Check {
 	public function getName() : string {
