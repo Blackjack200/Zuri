@@ -63,6 +63,7 @@ use ReinfyTeam\Zuri\checks\blockplace\scaffold\ScaffoldD;
 use ReinfyTeam\Zuri\checks\blockplace\Tower;
 use ReinfyTeam\Zuri\checks\chat\SpamA;
 use ReinfyTeam\Zuri\checks\chat\SpamB;
+use ReinfyTeam\Zuri\checks\Check;
 use ReinfyTeam\Zuri\checks\combat\autoclick\AutoClickA;
 use ReinfyTeam\Zuri\checks\combat\autoclick\AutoClickB;
 use ReinfyTeam\Zuri\checks\combat\autoclick\AutoClickC;
@@ -115,6 +116,7 @@ use ReinfyTeam\Zuri\utils\PermissionManager;
 class ZuriAC extends PluginBase {
 	private static ZuriAC $instance;
 
+	/** @var Check[] */
     private array $checks = [];
 
 	public function onLoad() : void {
@@ -286,6 +288,9 @@ class ZuriAC extends PluginBase {
 		$this->checks[] = new ProxyBot();
 	}
 
+	/**
+	 * @return Check[]
+	 */
 	public static function Checks() : array {
 		return ZuriAC::getInstance()->checks;
 	}

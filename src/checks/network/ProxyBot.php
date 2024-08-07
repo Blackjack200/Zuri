@@ -33,6 +33,8 @@ namespace ReinfyTeam\Zuri\checks\network;
 
 use pocketmine\event\Event;
 use pocketmine\event\player\PlayerPreLoginEvent;
+use pocketmine\scheduler\AsyncTask;
+use pocketmine\Server;
 use pocketmine\utils\Internet;
 use ReinfyTeam\Zuri\checks\Check;
 use function json_decode;
@@ -52,21 +54,39 @@ class ProxyBot extends Check {
 
 	public function checkJustEvent(Event $event) : void {
 		if ($event instanceof PlayerPreLoginEvent) {
-			$ip = $event->getIp();
-            $err = $ip;
-            $request = Internet::getUrl("https://proxycheck.io/v2/" . $ip, 10, ["Content-Type: application/json"], $err);
+			$that = $this;
+			Server::getInstance()->getAsyncPool()->submitTask(new class(fn($is) => $this->onQueryFinished($is, $event), $event->getIp()) extends AsyncTask {
+				public function __construct(\Closure $callback, private string $ip) {
+					$this->storeLocal('callback', $callback);
+				}
 
-			if ( $err === null ) {
-				$data = json_decode($request->getBody(), true, 16, JSON_PARTIAL_OUTPUT_ON_ERROR);
+				public function onRun() : void {
+					$request = Internet::getUrl("https://proxycheck.io/v2/" . $this->ip, 10, ["Content-Type: application/json"]);
+					$this->setResult(false);
+					if ($request !== null) {
+						$data = json_decode($request->getBody(), true, 16, JSON_PARTIAL_OUTPUT_ON_ERROR);
 
-				if (($data["status"] ?? null) !== "error" && isset($data[$ip])) {
-					$proxy = ($result[$ip]["proxy"] ?? null) === "yes";
-					if ($proxy) {
-						$this->warn($event->getPlayerInfo()->getUsername());
-						$event->setKickFlag(0, self::getData(self::ANTIBOT_MESSAGE));
+						if (($data["status"] ?? null) !== "error" && isset($data[$this->ip])) {
+							$this->setResult($data[$this->ip]["proxy"] ?? null) === "yes";
+						}
 					}
 				}
-			}
+
+				public function onCompletion() : void {
+					$this->fetchLocal('callback')($this->getResult());
+				}
+			});
+		}
+	}
+
+	private function onQueryFinished(bool $proxy, PlayerPreLoginEvent $event) : void {
+		$this->warn($event->getPlayerInfo()->getUsername());
+		$session = $event->getSession();
+		if (!$session->isConnected()) {
+			return;
+		}
+		if ($proxy) {
+			$session->disconnect(self::getData(self::ANTIBOT_MESSAGE));
 		}
 	}
 }

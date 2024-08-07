@@ -62,10 +62,13 @@ use pocketmine\inventory\ArmorInventory;
 use pocketmine\network\mcpe\protocol\DataPacket;
 use pocketmine\network\mcpe\protocol\InventoryTransactionPacket;
 use pocketmine\network\mcpe\protocol\LevelSoundEventPacket;
+use pocketmine\network\mcpe\protocol\Packet;
 use pocketmine\network\mcpe\protocol\types\inventory\UseItemOnEntityTransactionData;
 use pocketmine\network\mcpe\protocol\types\LevelSoundEvent;
 use pocketmine\player\Player;
 use pocketmine\Server;
+use pocketmine\timings\Timings;
+use pocketmine\timings\TimingsHandler;
 use ReinfyTeam\Zuri\player\PlayerAPI;
 use ReinfyTeam\Zuri\utils\BlockUtil;
 use ReinfyTeam\Zuri\ZuriAC;
@@ -78,7 +81,16 @@ class PlayerListener implements Listener {
 	private array $blockInteracted = [];
 	private array $clicksData = [];
 
-	const int DELTAL_TIME_CLICK = 1;
+	const DELTAL_TIME_CLICK = 1;
+
+	private static array $timings = [];
+	private static TimingsHandler $masterTimings;
+
+	public function __construct() {
+		if (!isset(self::$masterTimings)) {
+			self::$masterTimings = new TimingsHandler('ZuriAC', Timings::$serverTick);
+		}
+	}
 
 	public function onDataPacketReceive(DataPacketReceiveEvent $event) : void {
 		$packet = $event->getPacket();
@@ -497,12 +509,15 @@ class PlayerListener implements Listener {
 
 		foreach (ZuriAC::Checks() as $class) {
 			if ($class->enable()) {
-				$class->checkEvent($event, $playerAPI);
+				if (!isset(self::$timings[$class::class])) {
+					self::$timings[$class::class] = new TimingsHandler("Check - {$class->getName()}{$class->getSubType()}", self::$masterTimings);
+				}
+				self::$timings[$class::class]->time(fn() => $class->checkEvent($event, $playerAPI));
 			}
 		}
 	}
 
-	private function check(DataPacket $packet, PlayerAPI $player) : void {
+	private function check(DataPacket|Packet $packet, PlayerAPI $player) : void {
 		$playerAPI = PlayerAPI::getAPIPlayer($player->getPlayer());
 		if (($player = $playerAPI->getPlayer()) === null || !$player->isOnline() || !$player->spawned) {
 			return;
@@ -510,7 +525,10 @@ class PlayerListener implements Listener {
 
 		foreach (ZuriAC::Checks() as $class) {
 			if ($class->enable()) {
-				$class->check($packet, $playerAPI);
+				if (!isset(self::$timings[$class::class])) {
+					self::$timings[$class::class] = new TimingsHandler("Check - {$class->getName()}{$class->getSubType()}", self::$masterTimings);
+				}
+				self::$timings[$class::class]->time(fn() => $class->check($packet, $playerAPI));
 			}
 		}
 	}
@@ -518,7 +536,10 @@ class PlayerListener implements Listener {
 	private function checkJustEvent(Event $event) : void {
 		foreach (ZuriAC::Checks() as $class) {
 			if ($class->enable()) {
-				$class->checkJustEvent($event);
+				if (!isset(self::$timings[$class::class])) {
+					self::$timings[$class::class] = new TimingsHandler("Check - {$class->getName()}{$class->getSubType()}", self::$masterTimings);
+				}
+				self::$timings[$class::class]->time(fn() => $class->checkJustEvent($event));
 			}
 		}
 	}
