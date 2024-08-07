@@ -64,12 +64,16 @@ class FastBow extends Check {
 			$currentHsIndex = $playerAPI->getExternalData("currentHsIndex") ?? 0;
 			$hsTimeList = $playerAPI->getExternalData("hsTimeList") ?? [];
 
-			if ($shootFirstTick == -1) {
+			if ($shootFirstTick === -1) {
 				$playerAPI->setExternalData("shootFirstTickA", $tick - 30);
 			}
 
-			$tickDiff = $tick - $shootFirstTick; // server ticks since last hit
-			$delta = $tickDiff / $tps; // seconds since last hit
+			$tickDiff = (int) ($tick - $shootFirstTick); // server ticks since last hit
+			if ($tps !== 0) {
+				$delta = $tickDiff / $tps;
+			} else {
+				$delta = 0;
+			}
 			$playerAPI->setExternalData("hsTimeList", array_merge($hsTimeList, [$currentHsIndex => $delta])); // merge the new array to a new another one..
 			$hsTimeList = $playerAPI->getExternalData("hsTimeList"); // update again the list..
 			$playerAPI->setExternalData("hsTimeSum", $hsTimeSum - $hsTimeList[$currentHsIndex] + $delta);

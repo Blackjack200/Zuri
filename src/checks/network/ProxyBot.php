@@ -53,6 +53,7 @@ class ProxyBot extends Check {
 	}
 
 	public function checkJustEvent(Event $event) : void {
+		//TODO make this asynchronized
 		if ($event instanceof PlayerPreLoginEvent) {
 			$that = $this;
 			Server::getInstance()->getAsyncPool()->submitTask(new class(fn($is) => $this->onQueryFinished($is, $event), $event->getIp()) extends AsyncTask {

@@ -45,7 +45,7 @@ class MathUtil {
 		return ($playerAPI->getPlayer()->getDirectionVector() ?? $playerAPI->getPlayer()->getLocation())->multiply($distance);
 	}
 
-	public static function distance(Vector3 $from, Vector3 $to) : float|int {
+	public static function distance(Vector3 $from, Vector3 $to) : float {
 		return sqrt((($from->getX() - $to->getX()) ** 2) + (($from->getY() - $to->getY()) ** 2) + (($from->getZ() - $to->getZ()) ** 2));
 	}
 

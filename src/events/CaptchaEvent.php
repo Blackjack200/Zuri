@@ -70,6 +70,12 @@ class CaptchaEvent extends Event {
 	 * @throws RandomException
 	 */
 	public function call() : void {
+		$this->sendCaptcha();
+
+		parent::call();
+	}
+
+	public function sendCaptcha() : void {
 		if ($this->playerAPI->isCaptcha()) {
 			if ($this->playerAPI->getCaptchaCode() === "nocode") {
 				$this->playerAPI->setCaptchaCode(CharUtil::generatorCode(ConfigManager::getData(ConfigPaths::CAPTCHA_CODE_LENGTH)));
@@ -98,7 +104,5 @@ class CaptchaEvent extends Event {
 				}
 			}
 		}
-
-		parent::call();
 	}
 }

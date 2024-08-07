@@ -61,8 +61,8 @@ class KillAuraE extends Check {
 		if ($event instanceof EntityDamageByEntityEvent) {
 			$entity = $event->getEntity();
 			$damager = $event->getDamager();
-			$locDamager = $damager->getLocation();
 			if ($damager instanceof Player && $entity instanceof Player) {
+				$locDamager = $damager->getLocation();
 				$playerAPI = PlayerAPI::getAPIPlayer($damager);
 				$delta = MathUtil::getDeltaDirectionVector($playerAPI, 3);
 				$from = new Vector3($locDamager->getX(), $locDamager->getY() + $damager->getEyeHeight(), $locDamager->getZ());

@@ -32,12 +32,11 @@ declare(strict_types=1);
 namespace ReinfyTeam\Zuri\checks\combat\killaura;
 
 use pocketmine\math\Facing;
-use pocketmine\network\mcpe\protocol\DataPacket;
+use pocketmine\network\mcpe\protocol\Packet;
 use pocketmine\network\mcpe\protocol\PlayerActionPacket;
 use pocketmine\network\mcpe\protocol\types\PlayerAction;
 use ReinfyTeam\Zuri\checks\Check;
 use ReinfyTeam\Zuri\player\PlayerAPI;
-use ReinfyTeam\Zuri\utils\discord\DiscordWebhookException;
 use function in_array;
 
 class KillAuraA extends Check {
@@ -53,10 +52,7 @@ class KillAuraA extends Check {
 		return 5;
 	}
 
-	/**
-	 * @throws DiscordWebhookException
-	 */
-	public function check(DataPacket $packet, PlayerAPI $playerAPI) : void {
+	public function check(Packet $packet, PlayerAPI $playerAPI) : void {
 		if ($packet instanceof PlayerActionPacket) {
 			if (in_array($packet->action, [PlayerAction::START_BREAK, PlayerAction::ABORT_BREAK, PlayerAction::CONTINUE_DESTROY_BLOCK, PlayerAction::INTERACT_BLOCK], true)) {
 				switch($packet->face) {

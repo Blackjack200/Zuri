@@ -33,7 +33,7 @@ namespace ReinfyTeam\Zuri\checks\blockplace\scaffold;
 
 use pocketmine\event\block\BlockPlaceEvent;
 use pocketmine\event\Event;
-use pocketmine\network\mcpe\protocol\DataPacket;
+use pocketmine\network\mcpe\protocol\Packet;
 use ReinfyTeam\Zuri\checks\Check;
 use ReinfyTeam\Zuri\player\PlayerAPI;
 use ReinfyTeam\Zuri\utils\discord\DiscordWebhookException;
@@ -52,7 +52,7 @@ class ScaffoldB extends Check {
 		return 10;
 	}
 
-	public function check(DataPacket $packet, PlayerAPI $playerAPI) : void {
+	public function check(Packet $packet, PlayerAPI $playerAPI) : void {
 	}
 
 	/**

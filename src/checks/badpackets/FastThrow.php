@@ -60,6 +60,7 @@ class FastThrow extends Check {
 		if ($event instanceof ProjectileLaunchEvent) {
 			if (($entity = $event->getEntity()->getOwningEntity()) instanceof Player) { // prevent from crashing
 				$playerAPI = PlayerAPI::getAPIPlayer($entity);
+
 				$projectile = $event->getEntity();
 				if (!$projectile instanceof Arrow) { // ignore for Arrows
 					$lastUse = $playerAPI->getExternalData("lastUseFT");

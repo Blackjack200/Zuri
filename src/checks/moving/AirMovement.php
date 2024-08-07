@@ -31,10 +31,9 @@ declare(strict_types=1);
 
 namespace ReinfyTeam\Zuri\checks\moving;
 
-use pocketmine\network\mcpe\protocol\DataPacket;
+use pocketmine\network\mcpe\protocol\Packet;
 use ReinfyTeam\Zuri\checks\Check;
 use ReinfyTeam\Zuri\player\PlayerAPI;
-use ReinfyTeam\Zuri\utils\discord\DiscordWebhookException;
 
 class AirMovement extends Check {
 	public function getName() : string {
@@ -49,10 +48,7 @@ class AirMovement extends Check {
 		return 5;
 	}
 
-	/**
-	 * @throws DiscordWebhookException
-	 */
-	public function check(DataPacket $packet, PlayerAPI $playerAPI) : void {
+	public function check(Packet $packet, PlayerAPI $playerAPI) : void {
 		$effects = [];
 		$player = $playerAPI->getPlayer();
 		if (!$player->spawned && !$player->isConnected()) {

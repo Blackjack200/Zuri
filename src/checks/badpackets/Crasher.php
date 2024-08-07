@@ -31,7 +31,7 @@ declare(strict_types=1);
 
 namespace ReinfyTeam\Zuri\checks\badpackets;
 
-use pocketmine\network\mcpe\protocol\DataPacket;
+use pocketmine\network\mcpe\protocol\Packet;
 use pocketmine\network\mcpe\protocol\PlayerAuthInputPacket;
 use pocketmine\world\format\Chunk;
 use ReinfyTeam\Zuri\checks\Check;
@@ -55,7 +55,7 @@ class Crasher extends Check {
 	/**
 	 * @throws DiscordWebhookException
 	 */
-	public function check(DataPacket $packet, PlayerAPI $playerAPI) : void {
+	public function check(Packet $packet, PlayerAPI $playerAPI) : void {
 		if ($packet instanceof PlayerAuthInputPacket) {
 			$player = $playerAPI->getPlayer();
 			$pos = $packet->getPosition();

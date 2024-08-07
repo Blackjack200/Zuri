@@ -239,7 +239,6 @@ class ZuriAC extends PluginBase {
 
 		$this->checks[] = new FastBow();
 
-		// Fly
 		$this->checks[] = new FlyA();
 		$this->checks[] = new FlyB();
 		$this->checks[] = new FlyC();
@@ -291,7 +290,7 @@ class ZuriAC extends PluginBase {
 	/**
 	 * @return Check[]
 	 */
-	public static function Checks() : array {
-		return ZuriAC::getInstance()->checks;
+	public static function getChecks() : array {
+		return self::getInstance()->checks;
 	}
 }

@@ -125,7 +125,7 @@ class PlayerAPI implements IPlayerAPI {
 	}
 
 	public function isCurrentChunkIsLoaded() : bool {
-		return $this->getPlayer()->getWorld()->isInLoadedTerrain($this->getPlayer()->getLocation());
+		return $this->player->getWorld()->isInLoadedTerrain($this->player->getLocation());
 	}
 
 	//Break many blocks just one time break (This can check NUKER PLAYER)
@@ -250,26 +250,26 @@ class PlayerAPI implements IPlayerAPI {
 
 	//Sprinting
 	public function isSprinting() : bool {
-		return $this->getPlayer()->isSprinting();
+		return $this->player->isSprinting();
 	}
 
 	public function setSprinting(bool $data) : void {
-		$this->getPlayer()->setSprinting($data);
+		$this->player->setSprinting($data);
 	}
 
 	//On ground
 	public function isOnGround() : bool {
-		if ($this->getPlayer() === null) {
+		if ($this->player === null) {
 			return false;
 		}
-		return $this->getPlayer()->onGround;
+		return $this->player->onGround;
 	}
 
 	public function setOnGround(bool $data) : void {
-		if ($this->getPlayer() === null) {
+		if ($this->player === null) {
 			return;
 		}
-		$this->getPlayer()->onGround = $data;
+		$this->player->onGround = $data;
 	}
 
 	//Sniffing
@@ -314,10 +314,7 @@ class PlayerAPI implements IPlayerAPI {
 	 * @throws ReflectionException
 	 */
 	public function isDigging() : bool {
-		if ($this->getBlockBreakHandler() !== null) {
-			return true;
-		}
-		return false;
+		return $this->getBlockBreakHandler() !== null;
 	}
 
 	/**
@@ -325,19 +322,16 @@ class PlayerAPI implements IPlayerAPI {
 	 */
 	private function getBlockBreakHandler() : ?SurvivalBlockBreakHandler {
 		static $ref = null;
-		if ($this->getPlayer() === null) {
-			return null;
-		}
 		if ($ref === null) {
-			$ref = new ReflectionProperty($this->getPlayer(), "blockBreakHandler");
+			$ref = new ReflectionProperty($this->player, "blockBreakHandler");
 		}
-		return $ref->getValue($this->getPlayer());
+		return $ref->getValue($this->player);
 	}
 
 	//In Web
 	public function isInWeb() : bool {
-		$world = $this->getPlayer()->getWorld();
-		$location = $this->getPlayer()->getLocation();
+		$world = $this->player->getWorld();
+		$location = $this->player->getLocation();
 		$blocksAround = [
 			$world->getBlock($location),
 			$world->getBlock($location->add(0, 1, 0)),
@@ -355,8 +349,8 @@ class PlayerAPI implements IPlayerAPI {
 
 	//In Box Block
 	public function isInBoxBlock() : bool {
-		$world = $this->getPlayer()->getWorld();
-		$location = $this->getPlayer()->getLocation();
+		$world = $this->player->getWorld();
+		$location = $this->player->getLocation();
 		$blocksAround = [
 			$world->getBlock($location->getSide(Facing::NORTH)->add(0, 1, 0)),
 			$world->getBlock($location->getSide(Facing::WEST)->add(0, 1, 0)),
@@ -372,14 +366,15 @@ class PlayerAPI implements IPlayerAPI {
 
 	// is in bounding box
 	public function isInBoundingBox() : bool {
-		$player = $this->getPlayer();
+		$player = $this->player;
 		$pos = $player->getPosition();
+		$world = $player->getWorld();
 		foreach ([
-			$player->getWorld()->getBlock(new Vector3($pos->x + 1, $pos->y, $pos->z)),
-			$player->getWorld()->getBlock(new Vector3($pos->x - 1, $pos->y, $pos->z)),
-			$player->getWorld()->getBlock(new Vector3($pos->x, $pos->y, $pos->z + 1)),
-			$player->getWorld()->getBlock(new Vector3($pos->x, $pos->y, $pos->z - 1)),
-			$player->getWorld()->getBlock(new Vector3($pos->x, $pos->y + 1, $pos->z)),
+			$world->getBlock(new Vector3($pos->x + 1, $pos->y, $pos->z)),
+			$world->getBlock(new Vector3($pos->x - 1, $pos->y, $pos->z)),
+			$world->getBlock(new Vector3($pos->x, $pos->y, $pos->z + 1)),
+			$world->getBlock(new Vector3($pos->x, $pos->y, $pos->z - 1)),
+			$world->getBlock(new Vector3($pos->x, $pos->y + 1, $pos->z)),
 		] as $block) {
 			if ($block->isSolid()) {
 				return true;
@@ -394,7 +389,7 @@ class PlayerAPI implements IPlayerAPI {
 		return $this->lastGroundY;
 	}
 
-	public function setlastGroundY(float $data) : void {
+	public function setLastGroundY(float $data) : void {
 		$this->lastGroundY = $data;
 	}
 
@@ -418,11 +413,10 @@ class PlayerAPI implements IPlayerAPI {
 
 	//Ping
 	public function getPing() : float {
-		if (!$this->getPlayer()->isConnected() && !$this->getPlayer()->spawned) {
+		if (!$this->player->isConnected()) {
 			return 0.0;
-		} // always check first if player is currently connected before initilizing the main ping. This fixes the player if it is currently connected and ping has been initilized as well. Also, checking first player if its spawn is necessary to do checking after player is spawned as well.
-
-		return $this->getPlayer()->getNetworkSession()->getPing() === null ? 0.0 : $this->getPlayer()->getNetworkSession()->getPing(); // TODO: 0.0 frrr ping?
+		}
+		return ((float) $this->player->getNetworkSession()->getPing()) ?? 0.0; // TODO: 0.0 frrr ping?
 	}
 
 	//CPS

@@ -31,11 +31,10 @@ declare(strict_types=1);
 
 namespace ReinfyTeam\Zuri\checks\fly;
 
-use pocketmine\network\mcpe\protocol\DataPacket;
+use pocketmine\network\mcpe\protocol\Packet;
 use pocketmine\network\mcpe\protocol\UpdateAdventureSettingsPacket;
 use ReinfyTeam\Zuri\checks\Check;
 use ReinfyTeam\Zuri\player\PlayerAPI;
-use ReinfyTeam\Zuri\utils\discord\DiscordWebhookException;
 
 class FlyB extends Check {
 	public function getName() : string {
@@ -50,11 +49,8 @@ class FlyB extends Check {
 		return 1;
 	}
 
-	/**
-	 * @throws DiscordWebhookException
-	 */
-	public function check(DataPacket $packet, PlayerAPI $playerAPI) : void {
-		if ($packet instanceof UpdateAdventureSettingsPacket) {
+	public function check(Packet $packet, PlayerAPI $playerAPI) : void {
+		/*if ($packet instanceof UpdateAdventureSettingsPacket) {
 			$player = $playerAPI->getPlayer();
 			if (!$player->isCreative() && !$player->isSpectator() && !$player->getAllowFlight()) {
 				switch ($packet->flags) {
@@ -72,6 +68,6 @@ class FlyB extends Check {
 				}
 				$this->debug($playerAPI, "packetFlags=" . $packet->flags);
 			}
-		}
+		}*/
 	}
 }

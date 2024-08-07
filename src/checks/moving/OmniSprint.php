@@ -34,13 +34,12 @@ namespace ReinfyTeam\Zuri\checks\moving;
 use pocketmine\entity\effect\VanillaEffects;
 use pocketmine\event\Event;
 use pocketmine\event\player\PlayerMoveEvent;
-use pocketmine\network\mcpe\protocol\DataPacket;
+use pocketmine\network\mcpe\protocol\Packet;
 use pocketmine\network\mcpe\protocol\PlayerAuthInputPacket;
 use pocketmine\network\mcpe\protocol\types\InputMode;
 use pocketmine\network\mcpe\protocol\types\PlayerAuthInputFlags;
 use ReinfyTeam\Zuri\checks\Check;
 use ReinfyTeam\Zuri\player\PlayerAPI;
-use ReinfyTeam\Zuri\utils\discord\DiscordWebhookException;
 use ReinfyTeam\Zuri\utils\MathUtil;
 use function spl_object_id;
 
@@ -59,10 +58,7 @@ class OmniSprint extends Check {
 
 	private array $check = [];
 
-	/**
-	 * @throws DiscordWebhookException
-	 */
-	public function check(DataPacket $packet, PlayerAPI $playerAPI) : void {
+	public function check(Packet $packet, PlayerAPI $playerAPI) : void {
 		$player = $playerAPI->getPlayer();
 		if ($packet instanceof PlayerAuthInputPacket) {
 			if ($packet->getInputMode() === InputMode::MOUSE_KEYBOARD || $packet->getInputMode() === InputMode::TOUCHSCREEN) { // for windows and mobile, ios only..

@@ -62,6 +62,8 @@ class ReachB extends Check {
 			$entity = $event->getEntity();
 			$damager = $event->getDamager();
 			if ($cause === EntityDamageEvent::CAUSE_ENTITY_ATTACK && $damager instanceof Player) {
+				$locDamager = $damager->getLocation();
+				$locEntity = $entity->getLocation();
 				$entityAPI = PlayerAPI::getAPIPlayer($entity);
 				$damagerAPI = PlayerAPI::getAPIPlayer($damager);
 				$player = $entityAPI->getPlayer();
