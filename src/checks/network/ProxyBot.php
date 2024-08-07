@@ -63,13 +63,13 @@ class ProxyBot extends Check {
 
 				public function onRun() : void {
 					$url = "https://proxycheck.io/v2/" . $this->ip;
-					$request = Internet::getUrl($url, 10, ["Content-Type: application/json"]);
+					$request = Internet::getURL($url, 10, ["Content-Type: application/json"]);
 					$this->setResult(false);
 					\GlobalLogger::get()->debug("Zuri: requested $url");
 					if ($request !== null) {
 						$data = json_decode($request->getBody(), true, 16, JSON_PARTIAL_OUTPUT_ON_ERROR);
 						if (($data["status"] ?? null) !== "error" && isset($data[$this->ip])) {
-							$this->setResult($data[$this->ip]["proxy"] ?? null) === "yes";
+							$this->setResult(($data[$this->ip]["proxy"] ?? null) === "yes");
 						}
 					}
 				}
