@@ -67,10 +67,10 @@ class FastEat extends Check {
 		}
 	}
 
-    /**
-     * @throws DiscordWebhookException
-     */
-    public function checkEvent(Event $event, PlayerAPI $playerAPI) : void {
+	/**
+	 * @throws DiscordWebhookException
+	 */
+	public function checkEvent(Event $event, PlayerAPI $playerAPI) : void {
 		if ($event instanceof PlayerItemConsumeEvent) {
 			if ($event->getItem() instanceof ConsumableItem) {
 				$lastTick = $playerAPI->getExternalData("lastTickP");

@@ -310,20 +310,20 @@ class PlayerAPI implements IPlayerAPI {
 
 	//Digging
 
-    /**
-     * @throws ReflectionException
-     */
-    public function isDigging() : bool {
+	/**
+	 * @throws ReflectionException
+	 */
+	public function isDigging() : bool {
 		if ($this->getBlockBreakHandler() !== null) {
 			return true;
 		}
 		return false;
 	}
 
-    /**
-     * @throws ReflectionException
-     */
-    private function getBlockBreakHandler() : ?SurvivalBlockBreakHandler {
+	/**
+	 * @throws ReflectionException
+	 */
+	private function getBlockBreakHandler() : ?SurvivalBlockBreakHandler {
 		static $ref = null;
 		if ($this->getPlayer() === null) {
 			return null;
@@ -628,16 +628,14 @@ class PlayerAPI implements IPlayerAPI {
 		$this->captchaCode = $data;
 	}
 
-	public function getInventory(): PlayerInventory|static
-    {
+	public function getInventory() : PlayerInventory|static {
 		if ($this->getPlayer() === null) {
 			return $this;
 		}
 		return $this->getPlayer()->getInventory();
 	}
 
-	public function getLocation(): Location
-    {
+	public function getLocation() : Location {
 		return $this->getPlayer()->getLocation();
 	}
 

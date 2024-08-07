@@ -55,13 +55,13 @@ class FlyC extends Check {
 		return 1;
 	}
 
-    /**
-     * @throws DiscordWebhookException
-     */
-    public function checkEvent(Event $event, PlayerAPI $playerAPI) : void {
+	/**
+	 * @throws DiscordWebhookException
+	 */
+	public function checkEvent(Event $event, PlayerAPI $playerAPI) : void {
 		if ($event instanceof PlayerMoveEvent) {
 			$player = $playerAPI->getPlayer();
-            $oldPos = $event->getFrom();
+			$oldPos = $event->getFrom();
 			$newPos = $event->getTo();
 			$surroundingBlocks = BlockUtil::getSurroundingBlocks($player);
 			if (

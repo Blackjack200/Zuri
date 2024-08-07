@@ -50,12 +50,12 @@ class FlyA extends Check {
 		return 1;
 	}
 
-    /**
-     * @throws DiscordWebhookException
-     */
-    public function check(DataPacket $packet, PlayerAPI $playerAPI) : void {
+	/**
+	 * @throws DiscordWebhookException
+	 */
+	public function check(DataPacket $packet, PlayerAPI $playerAPI) : void {
 		$player = $playerAPI->getPlayer();
-        if (
+		if (
 			$playerAPI->getAttackTicks() < 40 ||
 			$playerAPI->getOnlineTime() <= 30 ||
 			$playerAPI->getJumpTicks() < 40 ||

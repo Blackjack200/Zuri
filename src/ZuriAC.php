@@ -117,7 +117,7 @@ class ZuriAC extends PluginBase {
 	private static ZuriAC $instance;
 
 	/** @var Check[] */
-    private array $checks = [];
+	private array $checks = [];
 
 	public function onLoad() : void {
 		self::$instance = $this;

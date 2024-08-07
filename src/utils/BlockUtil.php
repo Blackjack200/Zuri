@@ -73,7 +73,7 @@ class BlockUtil {
 	}
 
 	public static function isOnGround(Location $location, int $down) : bool {
-        $posX = $location->getX();
+		$posX = $location->getX();
 		$posZ = $location->getZ();
 		$fracX = (fmod($posX, 1.0) > 0.0) ? abs(fmod($posX, 1.0)) : (1.0 - abs(fmod($posX, 1.0)));
 		$fracZ = (fmod($posZ, 1.0) > 0.0) ? abs(fmod($posZ, 1.0)) : (1.0 - abs(fmod($posZ, 1.0)));
