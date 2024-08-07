@@ -61,11 +61,12 @@ class ProxyBot extends Check {
 				}
 
 				public function onRun() : void {
-					$request = Internet::getUrl("https://proxycheck.io/v2/" . $this->ip, 10, ["Content-Type: application/json"]);
+					$url = "https://proxycheck.io/v2/" . $this->ip;
+					$request = Internet::getUrl($url, 10, ["Content-Type: application/json"]);
 					$this->setResult(false);
+					\GlobalLogger::get()->debug("Zuri: requested $url");
 					if ($request !== null) {
 						$data = json_decode($request->getBody(), true, 16, JSON_PARTIAL_OUTPUT_ON_ERROR);
-
 						if (($data["status"] ?? null) !== "error" && isset($data[$this->ip])) {
 							$this->setResult($data[$this->ip]["proxy"] ?? null) === "yes";
 						}
@@ -80,12 +81,13 @@ class ProxyBot extends Check {
 	}
 
 	private function onQueryFinished(bool $proxy, PlayerPreLoginEvent $event) : void {
-		$this->warn($event->getPlayerInfo()->getUsername());
 		$session = $event->getSession();
 		if (!$session->isConnected()) {
+			$this->warn($event->getPlayerInfo()->getUsername());
 			return;
 		}
 		if ($proxy) {
+			$this->warn($event->getPlayerInfo()->getUsername());
 			$session->disconnect(self::getData(self::ANTIBOT_MESSAGE));
 		}
 	}

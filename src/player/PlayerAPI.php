@@ -403,7 +403,7 @@ class PlayerAPI implements IPlayerAPI {
 		return $this->lastNoGroundY;
 	}
 
-	public function setlastNoGroundY(float $data) : void {
+	public function setLastNoGroundY(float $data) : void {
 		$this->lastNoGroundY = $data;
 	}
 

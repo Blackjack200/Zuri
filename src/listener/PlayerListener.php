@@ -67,7 +67,6 @@ use pocketmine\network\mcpe\protocol\types\inventory\UseItemOnEntityTransactionD
 use pocketmine\network\mcpe\protocol\types\LevelSoundEvent;
 use pocketmine\player\Player;
 use pocketmine\Server;
-use pocketmine\timings\Timings;
 use pocketmine\timings\TimingsHandler;
 use ReinfyTeam\Zuri\player\PlayerAPI;
 use ReinfyTeam\Zuri\utils\BlockUtil;
@@ -88,7 +87,7 @@ class PlayerListener implements Listener {
 
 	public function __construct() {
 		if (!isset(self::$masterTimings)) {
-			self::$masterTimings = new TimingsHandler('ZuriAC', Timings::$serverTick);
+			self::$masterTimings = new TimingsHandler('ZuriAC');
 		}
 	}
 

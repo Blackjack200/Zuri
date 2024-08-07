@@ -40,7 +40,6 @@ use ReinfyTeam\Zuri\player\PlayerAPI;
 use ReinfyTeam\Zuri\utils\BlockUtil;
 use ReinfyTeam\Zuri\utils\discord\DiscordWebhookException;
 use function in_array;
-use function intval;
 
 class Phase extends Check {
 	public function getName() : string {
@@ -145,19 +144,19 @@ class Phase extends Check {
 				];
 				if ($player->isSurvival() && !$playerAPI->isOnCarpet() && !$playerAPI->isOnPlate() && !$playerAPI->isOnDoor() && !$playerAPI->isOnSnow() && !$playerAPI->isOnPlant() && !$playerAPI->isOnAdhesion() && !$playerAPI->isOnStairs() && !$playerAPI->isInLiquid() && !$playerAPI->isInWeb() && !in_array($id, $skip, true) && !BlockUtil::isUnderBlock($event->getTo(), $skip, 0)) {
 					$this->failed($playerAPI);
-					$x = intval($player->getLocation()->getX());
-					$z = intval($player->getLocation()->getZ());
+					$x = (int) $player->getLocation()->getX();
+					$z = (int) $player->getLocation()->getZ();
 					$oldZ = $event->getFrom()->getZ();
 					$oldX = $event->getFrom()->getX();
 					$newZ = $event->getTo()->getZ();
 					$newX = $event->getTo()->getX();
-					if (($y = intval($player->getWorld()->getHighestBlockAt($x, $z))) > intval($player->getLocation()->getY()) && $oldZ === $newZ && $oldX === $newX) {
-						$world->loadChunk(intval($newX), intval($newZ)); // the best hack thing to do before player teleports at the bottom of the block.
-						$world->loadChunk(intval($oldX), intval($oldZ)); // the best hack thing to do before player teleports at the bottom of the block.
+					if (($y = (int) $player->getWorld()->getHighestBlockAt($x, $z)) > (int) $player->getLocation()->getY() && $oldZ === $newZ && $oldX === $newX) {
+						$world->loadChunk(((int) $newX) >> 4, ((int) $newZ) >> 4); // the best hack thing to do before player teleports at the bottom of the block.
+						$world->loadChunk(((int) $oldX) >> 4, ((int) $oldZ) >> 4); // the best hack thing to do before player teleports at the bottom of the block.
 						$player->teleport(new Vector3($x, $y + 1, $z));
 					}
 					$event->cancel();
-					$this->debug($playerAPI, "x=$x, y=" . intval($player->getLocation()->getY()) . ", z=$z, teleportY=$y");
+					$this->debug($playerAPI, "x=$x, y=" . (int) $player->getLocation()->getY() . ", z=$z, teleportY=$y");
 				}
 			}
 		}
