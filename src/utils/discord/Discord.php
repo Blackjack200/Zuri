@@ -41,18 +41,18 @@ use function hexdec;
 use function str_replace;
 
 class Discord extends ConfigManager {
-	public const int BAN = 0;
-	public const int KICK = 1;
-	public const int JOIN = 2;
-	public const int LEAVE = 3;
-	public const int LAGGING = 4;
+	public const BAN = 0;
+	public const KICK = 1;
+	public const JOIN = 2;
+	public const LEAVE = 3;
+	public const LAGGING = 4;
 
 	public static ?Config $config = null;
 
-    /**
-     * @throws DiscordWebhookException
-     */
-    public static function Send(PlayerAPI $playerAPI, int $type, ?array $moduleInfo = null) : void {
+	/**
+	 * @throws DiscordWebhookException
+	 */
+	public static function Send(PlayerAPI $playerAPI, int $type, ?array $moduleInfo = null) : void {
 		$sendType = match ($type) {
 			self::BAN => "ban",
 			self::KICK => "kick",
