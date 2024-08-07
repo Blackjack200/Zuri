@@ -83,6 +83,7 @@ class PlayerAPI implements IPlayerAPI {
 	private float $jumpTicks = 0.0;
 	private float $teleportTicks = 0.0;
 	private float $attackTicks = 0.0;
+	private float $lastMotion = 0.0;
 	private float $slimeBlockTicks = 0.0;
 	private float $deathTicks = 0.0;
 	private float $placingTicks = 0.0;
@@ -639,5 +640,14 @@ class PlayerAPI implements IPlayerAPI {
 
 	public function isDebug() : bool {
 		return $this->debug;
+	}
+
+	public function setLastMotion(float $lastMotion) : void {
+		$this->lastMotion = $lastMotion;
+	}
+
+	//Placing ticks
+	public function getMotionTicks() : float {
+		return (microtime(true) - $this->lastMotion) * 20;
 	}
 }

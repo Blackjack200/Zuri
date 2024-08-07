@@ -55,6 +55,7 @@ class FlyA extends Check {
 			$playerAPI->getAttackTicks() < 40 ||
 			$playerAPI->getOnlineTime() <= 30 ||
 			$playerAPI->getJumpTicks() < 40 ||
+			$playerAPI->getMotionTicks() < 40 ||
 			$playerAPI->isInWeb() ||
 			$playerAPI->isOnGround() ||
 			$playerAPI->isOnAdhesion() ||

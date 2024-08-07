@@ -78,7 +78,7 @@ class FlyC extends Check {
 				return;
 			}
 			if (!$player->isCreative() && !$player->isSpectator() && !$player->getAllowFlight()) {
-				if ($oldPos->getY() <= $newPos->getY()) {
+				if ($newPos->y >= 0 && $oldPos->getY() <= $newPos->getY()) {
 					if ($player->getInAirTicks() > $this->getConstant("max-air-ticks")) {
 						$maxY = $player->getWorld()->getHighestBlockAt(intval($newPos->getX()), intval($newPos->getZ()));
 						$this->debug($playerAPI, "oldY=" . $oldPos->getY() . ", newY=" . $newPos->getY() . ", airTicks=" . $player->getInAirTicks() . ", surroundingBlocks=" . count($surroundingBlocks));

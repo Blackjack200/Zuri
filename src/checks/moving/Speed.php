@@ -60,6 +60,7 @@ class Speed extends Check {
 			if (
 				!$player->isSurvival() ||
 				$playerAPI->getAttackTicks() < 40 ||
+				$playerAPI->getMotionTicks() < 60 ||
 				$playerAPI->getSlimeBlockTicks() < 20 ||
 				$playerAPI->isOnAdhesion() ||
 				(!$player->isOnGround() && $player->getInAirTicks() > 5)
