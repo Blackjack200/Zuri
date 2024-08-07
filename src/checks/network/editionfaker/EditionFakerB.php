@@ -31,8 +31,8 @@ declare(strict_types=1);
 
 namespace ReinfyTeam\Zuri\checks\network\editionfaker;
 
-use pocketmine\network\mcpe\protocol\DataPacket;
 use pocketmine\network\mcpe\protocol\LoginPacket;
+use pocketmine\network\mcpe\protocol\Packet;
 use pocketmine\network\mcpe\protocol\types\DeviceOS;
 use ReinfyTeam\Zuri\checks\Check;
 use ReinfyTeam\Zuri\player\PlayerAPI;
@@ -57,7 +57,7 @@ class EditionFakerB extends Check {
 	/**
 	 * @throws DiscordWebhookException
 	 */
-	public function check(DataPacket $packet, PlayerAPI $playerAPI) : void {
+	public function check(Packet $packet, PlayerAPI $playerAPI) : void {
 		if ( $packet instanceof LoginPacket ) {
 			$authData = Utils::fetchAuthData($packet->chainDataJwt);
 			$titleId = $authData->titleId;

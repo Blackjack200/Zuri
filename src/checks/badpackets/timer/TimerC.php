@@ -31,8 +31,8 @@ declare(strict_types=1);
 
 namespace ReinfyTeam\Zuri\checks\badpackets\timer;
 
-use pocketmine\network\mcpe\protocol\DataPacket;
 use pocketmine\network\mcpe\protocol\MovePlayerPacket;
+use pocketmine\network\mcpe\protocol\Packet;
 use pocketmine\network\mcpe\protocol\PlayerAuthInputPacket;
 use ReinfyTeam\Zuri\checks\Check;
 use ReinfyTeam\Zuri\player\PlayerAPI;
@@ -54,7 +54,7 @@ class TimerC extends Check {
 	/**
 	 * @throws DiscordWebhookException
 	 */
-	public function check(DataPacket $packet, PlayerAPI $playerAPI) : void {
+	public function check(Packet $packet, PlayerAPI $playerAPI) : void {
 		if ( $packet instanceof PlayerAuthInputPacket ) {
 			// From Esoteric
 			$delay = $playerAPI->getExternalData("DelayCounter");
